@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
 import { useToast } from "@/components/ui/use-toast";
-
+import { useUserContext } from "@/context/AuthContext";
 
 import { SignupValidation } from "@/lib/validation";
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations";
@@ -29,8 +29,8 @@ const SignupForm = () => {
   });
 
   // Queries
-  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccount();
-  const { mutateAsync: signInAccount, isLoading: isSigningInUser } = useSignInAccount();
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount();
+  const { mutateAsync: signInAccount, isPending: isSigningInUser } = useSignInAccount();
 
   // Handler
   const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
@@ -50,9 +50,7 @@ const SignupForm = () => {
 
       if (!session) {
         toast({ title: "Something went wrong. Please login your new account", });
-        
         navigate("/sign-in");
-        
         return;
       }
 
