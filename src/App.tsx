@@ -27,7 +27,8 @@ const App = () => {
                 <Route path="/profile/:id/*" element={<Profile />} />
                 <Route path="/update-profile/:id" element={<UpdateProfile />} />
             </Route>
-
+            {/* Catch-all route for 404 */}
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Toaster/>
     </main>
